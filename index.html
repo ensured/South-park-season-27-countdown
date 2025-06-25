@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="Countdown to South Park Season 27 premiere on July 9, 2025">
+    <title>South Park Season 27 Countdown</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anime+Ace&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832_1280.jpg') no-repeat center center fixed;
+            background-size: cover;
+            background-color: #4a90e2; /* Fallback color */
+            font-family: 'Anime Ace', sans-serif;
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            text-shadow: 3px 3px 0 #ff0000, -3px -3px 0 #00ff00;
+            margin: 0.5rem;
+            animation: shake 0.1s infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+
+        .countdown {
+            display: flex;
+            gap: 1rem;
+            font-size: 2.5rem;
+            background: #000;
+            padding: 1.5rem;
+            border: 5px solid #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #ff00ff;
+            margin: 1rem 0;
+        }
+
+        .countdown div {
+            background: #fff;
+            color: #000;
+            padding: 1rem;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+
+        .countdown span {
+            display: block;
+            font-size: 1rem;
+            color: #fff;
+        }
+
+        p {
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 0 #000;
+            margin: 0.5rem;
+        }
+
+        .characters {
+            position: absolute;
+            bottom: 20px;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .character {
+            width: 100px;
+            transition: transform 0.3s;
+        }
+
+        .character:hover {
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .countdown { font-size: 1.5rem; }
+            .countdown div { min-width: 60px; padding: 0.8rem; }
+            p { font-size: 1.2rem; }
+            .character { width: 60px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SOUTH PARK SEASON 27 IS COMIN'!</h1>
+        <p>Get ready for more Cartman, Stan, Kyle, and Kenny, you bastards!</p>
+        <div class="countdown" id="countdown">
+            <div><span id="days">0</span>DAYS</div>
+            <div><span id="hours">0</span>HOURS</div>
+            <div><span id="minutes">0</span>MINUTES</div>
+            <div><span id="seconds">0</span>SECONDS</div>
+        </div>
+        <p>July 9, 2025 - Don't miss it, or Towelie will be pissed!</p>
+        <div class="characters">
+            <img class="character" src="images/cartman.png" alt="Cartman">
+            <img class="character" src="images/stan.png" alt="Stan">
+            <img class="character" src="images/kyle.png" alt="Kyle">
+            <img class="character" src="images/kenny.png" alt="Kenny">
+        </div>
+    </div>
+
+    <script>
+        const countdownDate = new Date("July 9, 2025 00:00:00").getTime();
+
+        const updateCountdown = () => {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").textContent = days;
+            document.getElementById("hours").textContent = hours;
+            document.getElementById("minutes").textContent = minutes;
+            document.getElementById("seconds").textContent = seconds;
+
+            if (distance < 0) {
+                clearInterval(interval);
+                document.getElementById("countdown").innerHTML = "<h2>IT'S HERE! Respect my authoritah!</h2>";
+            }
+        };
+
+        updateCountdown();
+        const interval = setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
