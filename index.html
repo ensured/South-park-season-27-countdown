@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="Countdown to South Park Season 27 premiere on July 9, 2025">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>South Park Season 27 Countdown</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Anime+Ace&display=swap');
@@ -16,7 +16,7 @@
             font-family: 'Anime Ace', sans-serif;
             color: #fff;
             text-align: center;
-            overflow: hidden;
+            position: relative; /* For snowflake positioning */
         }
 
         .container {
@@ -26,6 +26,8 @@
             justify-content: center;
             height: 100vh;
             background: rgba(0, 0, 0, 0.6);
+            z-index: 1; /* Above snowflakes */
+            position: relative;
         }
 
         h1 {
@@ -36,34 +38,34 @@
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(5px); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .countdown {
             display: flex;
             gap: 1rem;
             font-size: 2.5rem;
-            background: #000;
+            background: #333;
             padding: 1.5rem;
             border: 5px solid #fff;
-            border-radius: 15px;
-            box-shadow: 0 0 20px #ff00ff;
-            margin: 1rem 0;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #ff0;
+            margin: 1rem;
         }
 
         .countdown div {
             background: #fff;
-            color: #000;
+            color: #000; /* Numbers black for contrast */
             padding: 1rem;
-            border-radius: 10px;
+            border-radius: 5px;
             min-width: 80px;
         }
 
         .countdown span {
             display: block;
             font-size: 1rem;
-            color: #fff;
+            color: #000; /* Labels black for visibility */
         }
 
         p {
@@ -72,20 +74,61 @@
             margin: 0.5rem;
         }
 
-        .characters {
+        .character-list {
             position: absolute;
             bottom: 20px;
             display: flex;
             gap: 1rem;
+            z-index: 1; /* Above snowflakes */
         }
 
-        .character {
+        .character-card {
+            background: #000;
+            border: 3px solid #fff;
+            border-radius: 10px;
             width: 100px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
             transition: transform 0.3s;
         }
 
-        .character:hover {
-            transform: scale(1.2);
+        .character-card:hover {
+            transform: scale(1.1);
+        }
+
+        .cartman-card { background-color: #ff4d4d; color: #fff; }
+        .stan-card { background-color: #00b7eb; color: #fff; }
+        .kyle-card { background-color: #00cc00; color: #000; }
+        .kenny-card { background-color: #ff8c00; color: #fff; }
+
+        .error-message {
+            color: #ff0000;
+            font-size: 1.5rem;
+            display: none;
+        }
+
+        /* Snowfall styles */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #fff;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            text-shadow: 0 0 5px #fff;
+            z-index: 0; /* Behind content */
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
         }
 
         @media (max-width: 600px) {
@@ -93,54 +136,90 @@
             .countdown { font-size: 1.5rem; }
             .countdown div { min-width: 60px; padding: 0.8rem; }
             p { font-size: 1.2rem; }
-            .character { width: 60px; }
+            .character-card { width: 80px; height: 60px; font-size: 1rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>SOUTH PARK SEASON 27 IS COMIN'!</h1>
-        <p>Get ready for more Cartman, Stan, Kyle, and Kenny, you bastards!</p>
+        <p>Brace yourselves for more Cartman, Stan, Kyle, and Kenny!</p>
         <div class="countdown" id="countdown">
             <div><span id="days">0</span>DAYS</div>
             <div><span id="hours">0</span>HOURS</div>
             <div><span id="minutes">0</span>MINUTES</div>
             <div><span id="seconds">0</span>SECONDS</div>
         </div>
-        <p>July 9, 2025 - Don't miss it, or Towelie will be pissed!</p>
-        <div class="characters">
-            <img class="character" src="images/cartman.png" alt="Cartman">
-            <img class="character" src="images/stan.png" alt="Stan">
-            <img class="character" src="images/kyle.png" alt="Kyle">
-            <img class="character" src="images/kenny.png" alt="Kenny">
+        <p id="error-message" class="error-message">Oh no, the countdown is broken! Check the console for details.</p>
+        <p>July 9, 2025 - Miss it, and Towelie’ll be pissed!</p>
+        <div class="character-list">
+            <div class="character-card cartman-card">CARTMAN</div>
+            <div class="character-card stan-card">STAN</div>
+            <div class="character-card kyle-card">KYLE</div>
+            <div class="character-card kenny-card">KENNY</div>
         </div>
     </div>
 
     <script>
-        const countdownDate = new Date("July 9, 2025 00:00:00").getTime();
+        // Countdown script
+        try {
+            const countdownDate = new Date("July 9, 2025 00:00:00").getTime();
+            console.log("Countdown initialized. Target date:", new Date(countdownDate));
 
-        const updateCountdown = () => {
-            const now = new Date().getTime();
-            const distance = countdownDate - now;
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = countdownDate - now;
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("days").textContent = days;
-            document.getElementById("hours").textContent = hours;
-            document.getElementById("minutes").textContent = minutes;
-            document.getElementById("seconds").textContent = seconds;
+                const daysElement = document.getElementById("days");
+                const hoursElement = document.getElementById("hours");
+                const minutesElement = document.getElementById("minutes");
+                const secondsElement = document.getElementById("seconds");
 
-            if (distance < 0) {
-                clearInterval(interval);
-                document.getElementById("countdown").innerHTML = "<h2>IT'S HERE! Respect my authoritah!</h2>";
+                if (daysElement && hoursElement && minutesElement && secondsElement) {
+                    daysElement.textContent = days;
+                    hoursElement.textContent = hours;
+                    minutesElement.textContent = minutes;
+                    secondsElement.textContent = seconds;
+                } else {
+                    throw new Error("Countdown elements not found in DOM");
+                }
+
+                if (distance < 0) {
+                    clearInterval(interval);
+                    document.getElementById("countdown").innerHTML = "<h2>IT’S HERE! Respect my authoritah!</h2>";
+                }
+
+                console.log(`Countdown updated: ${days}d ${hours}h ${minutes}m ${seconds}s`);
             }
-        };
 
-        updateCountdown();
-        const interval = setInterval(updateCountdown, 1000);
+            updateCountdown();
+            const interval = setInterval(updateCountdown, 1000);
+        } catch (error) {
+            console.error("Countdown error:", error.message);
+            document.getElementById("error-message").style.display = "block";
+        }
+
+        // Snowfall script
+        function createSnowflake() {
+            const snowflake = document.createElement("div");
+            snowflake.className = "snowflake";
+            snowflake.innerHTML = "❄";
+            snowflake.style.left = Math.random() * 100 + "vw";
+            snowflake.style.animationDuration = Math.random() * 5 + 5 + "s"; // 5-10s fall
+            snowflake.style.opacity = Math.random() * 0.5 + 0.5;
+            document.body.appendChild(snowflake);
+
+            setTimeout(() => {
+                snowflake.remove();
+            }, 10000); // Remove after 10s
+        }
+
+        setInterval(createSnowflake, 200); // Create a snowflake every 200ms
     </script>
 </body>
 </html>
